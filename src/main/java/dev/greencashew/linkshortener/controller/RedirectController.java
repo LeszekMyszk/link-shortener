@@ -26,7 +26,7 @@ class RedirectController {
 
             ) throws IOException {
 
-                String targetUrl = linkService.gatherLink(id);
+                String targetUrl = linkService.gatherLinkAndIncrementVisits(id);
                 httpServletResponse.sendRedirect(targetUrl);
     }
 }
