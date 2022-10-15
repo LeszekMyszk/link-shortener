@@ -1,8 +1,8 @@
 package dev.greencashew.linkshortener.link;
 
 import dev.greencashew.linkshortener.dto.LinkDto;
-import dev.greencashew.linkshortener.link.exception.LinkAlreadyExistsException;
-import dev.greencashew.linkshortener.link.exception.LinkNotFoundException;
+import dev.greencashew.linkshortener.link.api.exception.LinkAlreadyExistsException;
+import dev.greencashew.linkshortener.link.api.exception.LinkNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class LinkServiceTest {
     @BeforeEach
     void setUp() {
         final HashMap<String, LinkDto> stringLinkDtoHashMap = new HashMap<>();
-        linkService = new LinkServiceImpl();
+        linkService = new LinkServiceImpl(new LinkInMemoryRepository());
     }
 
     @Test
@@ -46,22 +46,6 @@ class LinkServiceTest {
         //then
         assertThrows(LinkNotFoundException.class, ()-> linkService.gatherLink(notExistingId));
     }
-
-    /*@Test
-    void shouldCheckIfLinkAlreadyExist() {
-        //given
-        LinkDto linkDto = new LinkDto("duplikat", "email", "targetUrl", null,0);
-        LinkDto linkDto2 = new LinkDto("duplikat", "email", "targetUrl", null,0);
-        service.createLink(linkDto);
-        //when
-
-        //then
-        assertThrows(LinkAlreadyExistsException.class, () -> service.createLink(linkDto2));
-        return createLink;
-    }
-
-    private void AssertThrows(final Class<LinkAlreadyExistsException> linkAlreadyExistsExceptionClass, final Object o) {
-    }*/
 
     @Test
     @DisplayName("Should throw link not found exception when link with same id already added")

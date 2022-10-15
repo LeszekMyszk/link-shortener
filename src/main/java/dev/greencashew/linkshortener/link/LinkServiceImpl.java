@@ -1,39 +1,36 @@
 package dev.greencashew.linkshortener.link;
 
 import dev.greencashew.linkshortener.dto.LinkDto;
-import dev.greencashew.linkshortener.link.exception.LinkAlreadyExistsException;
-import dev.greencashew.linkshortener.link.exception.LinkNotFoundException;
+import dev.greencashew.linkshortener.link.api.exception.LinkAlreadyExistsException;
+import dev.greencashew.linkshortener.link.api.exception.LinkNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-
+@AllArgsConstructor
 @Service
-class LinkServiceImpl implements LinkService{
+class LinkServiceImpl implements LinkService {
 
-    private final HashMap<String, LinkDto> linkRepository;
 
-    LinkServiceImpl() {
-        linkRepository = new HashMap<>();
+    private final LinkRepository linkRepository;
 
+
+    @Override
+    public LinkDto createLink(final LinkDto toDto) {
+        if (linkRepository.findById(toDto.id()).isPresent()) {
+            throw new LinkAlreadyExistsException(toDto.id());
+        }
+        linkRepository.save(LinkEntity.fromDto(toDto));
+        return toDto;
     }
 
     @Override
-    public LinkDto createLink(final LinkDto  toDto) {
-        if (linkRepository.get(toDto.id()) != null) {
-            throw new LinkAlreadyExistsException(toDto.id());
-        } else {
-            linkRepository.put(toDto.id(), toDto);
-            return toDto;
-        }
+    public String gatherLink(final String id) {
+
+        final LinkEntity linkEntity = linkRepository.findById(id)
+                        .orElseThrow(() -> new LinkNotFoundException());
+
+        return linkEntity.getTargetUrl();
     }
-        @Override
-        public String gatherLink(final String id){
-            LinkDto linkDto = linkRepository.get(id);
-            if (linkDto == null) {
-                throw new LinkNotFoundException();
-            }
-            return linkDto.targetUrl();
-        }
 
 
 }

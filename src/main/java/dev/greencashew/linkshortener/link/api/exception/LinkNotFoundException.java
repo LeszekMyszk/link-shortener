@@ -1,4 +1,4 @@
-package dev.greencashew.linkshortener.link.exception;
+package dev.greencashew.linkshortener.link.api.exception;
 
 public class LinkNotFoundException extends RuntimeException{
     public LinkNotFoundException(final String id) {
