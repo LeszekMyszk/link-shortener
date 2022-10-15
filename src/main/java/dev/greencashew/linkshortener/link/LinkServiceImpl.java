@@ -6,6 +6,8 @@ import dev.greencashew.linkshortener.link.api.exception.LinkNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @AllArgsConstructor
 @Service
 class LinkServiceImpl implements LinkService {
@@ -15,6 +17,7 @@ class LinkServiceImpl implements LinkService {
 
 
     @Override
+    @Transactional
     public LinkDto createLink(final LinkDto toDto) {
         if (linkRepository.findById(toDto.id()).isPresent()) {
             throw new LinkAlreadyExistsException(toDto.id());
@@ -24,13 +27,15 @@ class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public String gatherLink(final String id) {
+    @Transactional
+    public String gatherLinkAndIncrementVisits(final String id) {
 
         final LinkEntity linkEntity = linkRepository.findById(id)
-                        .orElseThrow(() -> new LinkNotFoundException());
-
+                .orElseThrow(() -> new LinkNotFoundException());
+        linkEntity.setVisits(linkEntity.getVisits()+1);
         return linkEntity.getTargetUrl();
     }
+
 
 
 }
