@@ -26,6 +26,7 @@ class LinkManageController {
     LinkDto createLink(@Valid @RequestBody CreateLinkDto link) {
         return linkService.createLink(link.toDto());
     }
+
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/visits/{visits}")
@@ -33,4 +34,10 @@ class LinkManageController {
         return linkService.getLinksForVisitsHigherThan(visits);
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/links/{id}")
+    LinkDto getLinksById(@PathVariable String id) {
+        return linkService.getLinksById(id);
+    }
 }
