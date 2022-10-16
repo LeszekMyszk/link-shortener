@@ -1,10 +1,7 @@
 package dev.greencashew.linkshortener.link;
 
 import dev.greencashew.linkshortener.dto.LinkDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 class LinkEntity {
