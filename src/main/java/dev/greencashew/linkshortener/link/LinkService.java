@@ -10,4 +10,6 @@ public interface LinkService {
     String gatherLinkAndIncrementVisits(String id);
 
     List<LinkDto> getLinksForVisitsHigherThan(Integer visits);
+
+    LinkDto getLinksById(String id);
 }

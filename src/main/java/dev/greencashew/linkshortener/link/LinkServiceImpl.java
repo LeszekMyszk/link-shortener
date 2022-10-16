@@ -46,5 +46,11 @@ class LinkServiceImpl implements LinkService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public LinkDto getLinksById(final String id) {
+        return linkRepository.findById(id)
+                .orElseThrow(() -> new LinkNotFoundException(id))
+                .toDto();
+    }
 
 }
