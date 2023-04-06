@@ -12,4 +12,12 @@ public interface LinkService {
     List<LinkDto> getLinksForVisitsHigherThan(Integer visits);
 
     LinkDto getLinksById(String id);
+
+    /**
+     * @param id this is alias
+     * @param email used for security
+     * @return returns {@code true} when link was found and deleted
+     */
+    boolean deleteLink(String id, String email);
+
 }

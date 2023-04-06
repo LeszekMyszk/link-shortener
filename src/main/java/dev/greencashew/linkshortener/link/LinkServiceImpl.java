@@ -21,10 +21,14 @@ class LinkServiceImpl implements LinkService {
     @Override
     @Transactional
     public LinkDto createLink(final LinkDto toDto) {
-        if (linkRepository.findById(toDto.id()).isPresent()) {
+        final String lowerCaseId = toDto.id().toLowerCase();
+
+        if (linkRepository.findById(lowerCaseId).isPresent()) {
             throw new LinkAlreadyExistsException(toDto.id());
         }
-        linkRepository.save(LinkEntity.fromDto(toDto));
+        final LinkEntity entity = LinkEntity.fromDto(toDto);
+        entity.setId(lowerCaseId);
+        linkRepository.save(entity);
         return toDto;
     }
 
@@ -48,9 +52,21 @@ class LinkServiceImpl implements LinkService {
 
     @Override
     public LinkDto getLinksById(final String id) {
+        final String lowerCaseId = id.toLowerCase();
         return linkRepository.findById(id)
-                .orElseThrow(() -> new LinkNotFoundException(id))
+                .orElseThrow(() -> new LinkNotFoundException(lowerCaseId))
                 .toDto();
+    }
+
+    @Override
+    public boolean deleteLink(final String id, final String email) {
+        final String lowerCaseId = id.toLowerCase();
+        final LinkDto linkDto = getLinksById(id);
+        if (linkDto.email().equalsIgnoreCase(email)) {
+            linkRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }

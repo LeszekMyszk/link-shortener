@@ -43,18 +43,18 @@ class ExpiredLinksServiceImplTest {
         then(repository).should().deleteAll(expiredLinks);
     }
 
-//    @Test
-//    void shouldNotRemoveUnExpiredLinks() {
-//        //given
-//        final LocalDate today = LocalDate.of(2022, 1, 1);
-//
-//        List<LinkEntity> nonExpiredLinks = List.of();
-//        given(repository.findLinksBeforeDate(today)).willReturn(nonExpiredLinks);
-//
-//        //when
-//        expiredLinksService.removeExpiredLinks(today);
-//
-//        //then
-//        then(repository).should().deleteAll(nonExpiredLinks);
-//    }
+    @Test
+    void shouldNotRemoveUnExpiredLinks() {
+        //given
+        final LocalDate today = LocalDate.of(2022, 1, 1);
+
+        List<LinkEntity> nonExpiredLinks = List.of();
+        given(repository.findLinksBeforeDate(today)).willReturn(nonExpiredLinks);
+
+        //when
+        expiredLinksService.removeExpiredLinks(today);
+
+        //then
+        then(repository).should().deleteAll(nonExpiredLinks);
+    }
 }

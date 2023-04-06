@@ -38,7 +38,6 @@ class GlobalControllerAdviser {
     ExceptionResponse handError(Exception error) {
         return new ExceptionResponse(error.getMessage());
     }
-
     ;
 }
 

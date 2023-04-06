@@ -4,6 +4,7 @@ import dev.greencashew.linkshortener.dto.LinkDto;
 import dev.greencashew.linkshortener.link.LinkService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,13 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/links")
-
 class LinkManageController {
     private final LinkService linkService;
-
-   // LinkManageController(final LinkService linkService) {
-  //      this.linkService = linkService;
- //   }
 
     @PostMapping
     @ResponseBody
@@ -40,4 +36,12 @@ class LinkManageController {
     LinkDto getLinksById(@PathVariable String id) {
         return linkService.getLinksById(id);
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteLink(@PathVariable String id, @RequestHeader String email) {
+        linkService.deleteLink(id, email);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
